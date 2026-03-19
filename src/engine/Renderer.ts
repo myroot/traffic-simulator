@@ -73,6 +73,26 @@ export class Renderer {
       if (this.onVehicleClick) this.onVehicleClick(closest);
       if (this.lastWorld) this.render(this.lastWorld);
     });
+
+    // Double click to move to start of road
+    this.canvas.addEventListener('dblclick', () => {
+      if (!this.lastWorld) return;
+      const metrics = this.getRoadMetrics(this.lastWorld, this.canvas.width, this.canvas.height);
+      const cx = this.canvas.width / 2;
+      const cy = this.canvas.height / 2;
+
+      if (metrics.isCirc) {
+        this.camera.x = cx - cx * this.camera.zoom;
+        this.camera.y = cy - (cy - metrics.outerRadius! + metrics.totalRoadWidth / 2) * this.camera.zoom;
+      } else {
+        this.camera.x = 100 - metrics.startX! * this.camera.zoom;
+        this.camera.y = cy - cy * this.camera.zoom;
+      }
+      
+      this.followedVehicle = null;
+      if (this.onVehicleClick) this.onVehicleClick(null);
+      this.render(this.lastWorld);
+    });
   }
 
   private getRoadMetrics(world: World, canvasWidth: number, canvasHeight: number) {
