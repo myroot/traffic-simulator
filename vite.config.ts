@@ -5,5 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // IMPORTANT: 깃허브 레포지토리 이름이 'traffic-simulator'라면 아래 주석을 해제해주세요
-  // base: '/traffic-simulator/', 
+  base: '/traffic-simulator/', 
 })
